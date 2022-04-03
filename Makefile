@@ -38,6 +38,7 @@ $(img): $(kernel) $(grub_cfg)
 	@losetup -d /dev/loop0
 	@losetup -d /dev/loop1
 
+#TODO: Switch from platform specific ld to x86_64-elf-ld 
 $(kernel): $(assembly_object_files) $(linker_script)
 	@ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
 
