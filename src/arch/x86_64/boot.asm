@@ -1,6 +1,7 @@
 ; Makes a label publc.
 ; start is the entry point to the kernel
 global start
+extern long_mode_start
 
 ; default section (.text) for executable code.
 section .text
@@ -15,6 +16,11 @@ start:
 
    call set_up_page_tables
    call enable_paging
+
+   ; load the 64-bit GDT
+   lgdt [gdt64.pointer]
+   
+   jmp gdt64.code:long_mode_start
    ; print `OK` to screen.
    ; mov dword -> moves 32bit constant to memory address 0xb8000
    mov dword [0xb8000], 0x2f4b2f4f
@@ -135,6 +141,14 @@ enable_paging:
 
    ret
 
+section .rodata
+gdt64:
+   dq 0 ; zero entry
+.code: equ $ - gdt64
+   dq (1<<43) | (1<<44) | (1<<47) | (1<<53) ; code segment
+.pointer:
+   dw $ - gdt64 - 1
+   dq gdt64
 
 section .bss
 align 4096
