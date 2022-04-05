@@ -33,7 +33,7 @@ $(img): $(kernel) $(grub_cfg)
 	@mkdir -p /mnt/fatgrub/boot 
 	@cp $(grub_cfg) /mnt/fatgrub/boot/grub 
 	@cp $(kernel) /mnt/fatgrub/boot
-	@sudo grub-install --root-directory=/mnt/fatgrub --no-floppy --modules="normal part_msdos ext2 multiboot2" /dev/loop0 -d /usr/lib/grub/i386-pc
+	@sudo grub-install --root-directory=/mnt/fatgrub --no-floppy --modules="normal part_msdos ext2 multiboot" /dev/loop0 -d /usr/lib/grub/i386-pc
 	@umount /mnt/fatgrub
 	@losetup -d /dev/loop0
 	@losetup -d /dev/loop1
