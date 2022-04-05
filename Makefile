@@ -5,9 +5,9 @@ img := build/os-$(arch).img
 linker_script := src/arch/$(arch)/linker.ld
 grub_cfg := src/arch/$(arch)/grub.cfg
 
-cfiles_source_files := $(wildcard src/cfiles/*.c)
-cfiles_object_files := $(patsubst src/cfiles/%.c, \
-	build/cfiles/%.o, $(cfiles_source_files))
+cfiles_source_files := $(wildcard src/csrc/*.c)
+cfiles_object_files := $(patsubst src/csrc/%.c, \
+	build/csrc/%.o, $(cfiles_source_files))
 
 assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
 assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
