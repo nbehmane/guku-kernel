@@ -4,6 +4,11 @@ img := build/os-$(arch).img
 
 linker_script := src/arch/$(arch)/linker.ld
 grub_cfg := src/arch/$(arch)/grub.cfg
+
+cfiles_source_files := $(wildcard src/cfiles/*.c)
+cfiles_object_files := $(patsubst src/cfiles/%.c, \
+	build/cfiles/%.o, $(cfiles_source_files))
+
 assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
 assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
    build/arch/$(arch)/%.o, $(assembly_source_files))
@@ -38,11 +43,9 @@ $(img): $(kernel) $(grub_cfg)
 	@losetup -d /dev/loop0
 	@losetup -d /dev/loop1
 
-#TODO: Switch from platform specific ld to x86_64-elf-ld 
 $(kernel): $(assembly_object_files) $(linker_script)
 	@ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
 
-# compile assembly files
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@mkdir -p $(shell dirname $@)
 	@nasm -felf64 $< -o $@
