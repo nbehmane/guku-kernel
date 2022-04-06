@@ -44,7 +44,7 @@ $(img): $(kernel) $(grub_cfg)
 	@losetup -d /dev/loop1
 
 $(kernel): $(assembly_object_files) $(linker_script)
-	@ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
+	@../cross/bin/x86_64-elf-ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
 
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@mkdir -p $(shell dirname $@)
