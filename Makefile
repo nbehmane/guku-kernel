@@ -52,4 +52,5 @@ build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 
 $(cfiles_object_files): $(cfiles_source_files)
 	@mkdir -p $(shell dirname $@)
-	@../cross/bin/x86_64-elf-gcc $< -c -g -Wall -o $@
+	@../cross/bin/x86_64-elf-gcc -Isrc/csrc/headers $< -c -g -Wall -o $@
+
