@@ -44,7 +44,7 @@ $(img): $(kernel) $(grub_cfg)
 	@losetup -d /dev/loop1
 
 $(kernel): $(assembly_object_files) $(cfiles_object_files) $(linker_script)
-	@../cross/bin/x86_64-elf-ld -n -T $(linker_script) -o $(kernel) $(cfiles_object_files) $(assembly_object_files)
+	@../cross/bin/x86_64-elf-ld -n -T $(linker_script) -o $(kernel) /build/csrc  $(assembly_object_files)
 
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@mkdir -p $(shell dirname $@)
@@ -52,4 +52,4 @@ build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 
 $(cfiles_object_files): $(cfiles_source_files)
 	@mkdir -p $(shell dirname $@)
-	@../cross/bin/x86_64-elf-gcc -I$< $< -c -g -Wall -o $@ 
+	@../cross/bin/x86_64-elf-gcc $< -c -g -Wall -o $@
