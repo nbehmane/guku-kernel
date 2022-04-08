@@ -50,14 +50,15 @@ extern char *strcpy(char *dest, const char *src)
 extern int strcmp(const char *s1, const char *s2)
 {
    int i = 0;
-   char c1 = -1;
-   char c2 = -1;
+   char c1 = '\0';
+   char c2 = '\0';
    int res = 0;
 
-   for (;; i += 1)
+   for (;; i++)
    {
       c1 = *(s1 + i);
       c2 = *(s2 + i);
+
       if ((c1 - '\0') == 0 && (c2 - '\0') != 0)
       {
          res = c1 - c2;
