@@ -1,4 +1,5 @@
 #include "gklib.h"
+/* TODO: strdup once malloc has been implemented. */
 
 extern void *memset(void *dst, int c, size_t n)
 {
@@ -74,3 +75,20 @@ extern int strcmp(const char *s1, const char *s2)
    }
    return res;
 }
+
+extern const char *strchr(const char *s, int c)
+{
+   int i = 0; 
+
+   for (;;)
+      if (*(s + i) == c)
+         break;
+      else if (*(s + i) == '\0')
+         break;
+
+   return s + i;
+}
+
+
+
+
