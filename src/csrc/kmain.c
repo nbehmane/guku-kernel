@@ -1,4 +1,5 @@
 #include "vga.h"
+#include "gklib.h"
 
 /**** BEGIN KMAIN ****/
 int kmain()
