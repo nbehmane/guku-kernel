@@ -33,7 +33,7 @@ void cursor_mv()
 /** VGA Functions **/
 void VGA_display_char(char c)
 {
-   vgaBuff[cursor] = VGA_CHAR(VGA_BRIGHT(VGA_GRAY), VGA_BLACK, c);
+   vgaBuff[cursor] = VGA_DISP(VGA_BRIGHT(VGA_GRAY), VGA_BLACK, c);
    cursor_mv();
 }
 
@@ -49,3 +49,61 @@ void VGA_display_str(const char *str)
       VGA_display_char(*(str +i));
 }
 /**** END VGA ****/
+
+/**** BEGIN PRINT FUNC ****/
+extern void print_char(char c)
+{
+   VGA_display_char(c);
+}
+
+extern void print_str(const char *str)
+{
+   VGA_display_str(str);
+}
+
+extern void print_uchar(unsigned char c)
+{
+   unsigned char uc = c;
+   vgaBuff[cursor] = VGA_DISP(VGA_BRIGHT(VGA_GRAY), VGA_BLACK, uc);
+   cursor_mv();
+}
+
+extern void print_short(short shrt)
+{
+   short s = shrt;
+   vgaBuff[cursor] = VGA_DISP(VGA_BRIGHT(VGA_GRAY), VGA_BLACK, s);
+   cursor_mv();
+}
+
+extern char *convert16(long num)
+{
+   static char Rep[] = "0123456789ABCDEF";
+   static char buffer[50];
+   char *ptr;
+   ptr = &buffer[49];
+   *ptr = '\0';
+   
+   do
+   {
+      *--ptr = Rep[num % 16];
+      num /= 16;
+   } while (num != 0);
+
+   return (ptr);
+}
+
+extern void print_long_hex(long num)
+{
+   char *con = convert16(num);
+   VGA_display_str(con);
+}
+/**** END PRINT FUNC ****/
+
+
+
+
+
+
+
+
+

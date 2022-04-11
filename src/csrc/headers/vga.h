@@ -5,7 +5,7 @@
 #define VGA_BASE 0xb8000
 #define FG(color) ((color) & 0x0F)
 #define BG(color) ((color) << 4)
-#define VGA_CHAR(fg, bg, ch) (((FG((fg)) | BG((bg))) << 8) | (ch))
+#define VGA_DISP(fg, bg, ch) (((FG((fg)) | BG((bg))) << 8) | (ch))
 #define VGA_BRIGHT(color) ((color) + 8)
 #define WIDTH 80
 #define HEIGHT 25
@@ -24,6 +24,10 @@
 void VGA_display_char(char c);
 void VGA_clear(void);
 void VGA_display_str(const char *str);
-
+extern void print_char(char c);
+extern void print_str(const char *str);
+extern void print_uchar(unsigned char c);
+extern void print_short(short shrt);
+extern void print_long_hex(long num);
 
 #endif // VGA_H
