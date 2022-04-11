@@ -4,7 +4,7 @@
 extern void *memset(void *dst, int c, size_t n)
 {
    int i = 0;
-   int *d = (int *)dst;
+   char *d = (char *)dst;
 
    for (; i < n; i++)
       *(d + i) = c;
@@ -15,8 +15,8 @@ extern void *memset(void *dst, int c, size_t n)
 extern void *memcpy(void *dest, const void *src, size_t n)
 {
    int i = 0;
-   size_t *d = (size_t *)dest;
-   size_t *s = (size_t *)src;
+   char *d = (char *)dest;
+   char *s = (char *)src;
 
    for (; i < n; i++)
       *(d + i) = *(s + i);

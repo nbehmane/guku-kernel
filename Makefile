@@ -5,10 +5,6 @@ img := build/os-$(arch).img
 linker_script := src/arch/$(arch)/linker.ld
 grub_cfg := src/arch/$(arch)/grub.cfg
 
-cfiles_source_files := $(wildcard src/csrc/*.c)
-cfiles_object_files := $(patsubst src/csrc/%.c, \
-	build/csrc/%.o, $(cfiles_source_files))
-
 assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
 assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
    build/arch/$(arch)/%.o, $(assembly_source_files))
@@ -43,14 +39,16 @@ $(img): $(kernel) $(grub_cfg)
 	@losetup -d /dev/loop0
 	@losetup -d /dev/loop1
 
-$(kernel): $(assembly_object_files) $(cfiles_object_files) $(linker_script)
-	@../cross/bin/x86_64-elf-ld -n -T $(linker_script) -o $(kernel) /build/csrc  $(assembly_object_files)
+$(kernel): $(assembly_object_files) $(linker_script)
+	@../cross/bin/x86_64-elf-ld -n -T $(linker_script) $(assembly_object_files) \
+	build/arch/$(arch)/kmain.o build/arch/$(arch)/vga.o build/arch/$(arch)/gklib.o -o $(kernel) 
 
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@mkdir -p $(shell dirname $@)
+	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/kmain.c -o build/arch/$(arch)/kmain.o
+	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/vga.c -o build/arch/$(arch)/vga.o
+	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/gklib.c -o build/arch/$(arch)/gklib.o
 	@nasm -felf64 $< -o $@
 
-$(cfiles_object_files): $(cfiles_source_files)
-	@mkdir -p $(shell dirname $@)
-	@../cross/bin/x86_64-elf-gcc -Isrc/csrc/headers $< -c -g -Wall -o $@
+
 

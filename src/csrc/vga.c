@@ -1,27 +1,51 @@
 #include "vga.h"
+#include "gklib.h"
 
 /** VGA Globals **/
 static unsigned short *vgaBuff = (unsigned short *)VGA_BASE;
-static int width = 80;
-static int height = 20;
+static int cursor = 0;
+static int row = 0;
+static int col = 0;
 
-/** VGA Functions **/
-void VGA_display_char(int row, int col, char c)
+/** VGA Internal Functions **/
+void cursor_newline()
 {
-   vgaBuff[row*width + col] = VGA_CHAR(VGA_BRIGHT(VGA_GRAY), VGA_BLACK, c);
+   /* This will be replaced by VGA_scroll() */
+   row += 1;
+   col = 0;
+   if (row == (HEIGHT + 1))
+   {
+      row = 0;
+      col = 0;
+   }
+   cursor = row * WIDTH + col;
 }
 
-void VGA_display_str(int row, int col, char *str, int len)
+void cursor_mv()
+{
+   col += 1;
+   if (col == (WIDTH + 1))
+      cursor_newline();
+   else
+      cursor = row * WIDTH + col;
+}
+
+/** VGA Functions **/
+void VGA_display_char(char c)
+{
+   vgaBuff[cursor] = VGA_CHAR(VGA_BRIGHT(VGA_GRAY), VGA_BLACK, c);
+   cursor_mv();
+}
+
+void VGA_clear(void) 
+{
+   vgaBuff = memset(vgaBuff, '\0', WIDTH * HEIGHT);
+}
+
+void VGA_display_str(const char *str)
 {
    int i = 0;
-   if (len == 0)
-      while (*(str + i) != '\0')
-      {
-         VGA_display_char(row, col + i, *(str + i));
-         i++;
-      }
-   else 
-      for (; i < len; i++)
-         VGA_display_char(row, col + i, *(str + i));
+   for (; *(str + i) != '\0'; i++)
+      VGA_display_char(*(str +i));
 }
 /**** END VGA ****/
