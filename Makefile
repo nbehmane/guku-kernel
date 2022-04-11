@@ -48,6 +48,7 @@ build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/kmain.c -o build/arch/$(arch)/kmain.o
 	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/vga.c -o build/arch/$(arch)/vga.o
 	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/gklib.c -o build/arch/$(arch)/gklib.o
+	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/ps2.c -o build/arch/$(arch)/ps2.o
 	@nasm -felf64 $< -o $@
 
 
