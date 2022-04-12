@@ -41,7 +41,8 @@ $(img): $(kernel) $(grub_cfg)
 
 $(kernel): $(assembly_object_files) $(linker_script)
 	@../cross/bin/x86_64-elf-ld -n -T $(linker_script) $(assembly_object_files) \
-	build/arch/$(arch)/kmain.o build/arch/$(arch)/vga.o build/arch/$(arch)/gklib.o -o $(kernel) 
+	build/arch/$(arch)/kmain.o build/arch/$(arch)/vga.o build/arch/$(arch)/gklib.o \
+	build/arch/$(arch)/ps2.o -o $(kernel) 
 
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@mkdir -p $(shell dirname $@)

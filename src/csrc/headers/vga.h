@@ -10,7 +10,6 @@
 #define WIDTH 80
 #define HEIGHT 25
 
-
 /** VGA Colors **/
 #define VGA_BLACK      0
 #define VGA_BLUE       1
@@ -24,10 +23,13 @@
 void VGA_display_char(char c);
 void VGA_clear(void);
 void VGA_display_str(const char *str);
+void VGA_cursor_newline();
 extern void print_char(char c);
 extern void print_str(const char *str);
 extern void print_uchar(unsigned char c);
 extern void print_short(short shrt);
 extern void print_long_hex(long num);
+extern void print_int(int num);
+extern void print_bin(int num);
 
 #endif // VGA_H

@@ -1,8 +1,11 @@
 #ifndef PS2_H
 #define PS2_H
 #include <stdint-gcc.h>
+#define PS_DPORT 0x60
+#define PS_STAT 0x64
+#define PS_WRITE 0x64
 
-typedef struct _psCont
+typedef struct __attribute__((packed))
 {
    uint8_t p1_irpt : 1;
    uint8_t p2_irpt : 1;
@@ -14,7 +17,7 @@ typedef struct _psCont
    uint8_t zero2 : 1;
 } PSContConfig;
 
-typedef struct _psStat
+typedef struct __attribute__((packed))
 {
    uint8_t o_buff : 1;
    uint8_t i_buff : 1;
@@ -26,7 +29,7 @@ typedef struct _psStat
    uint8_t p_error : 1;
 } PSStatusReg;
 
-typedef struct _psOutPort
+typedef struct __attribute__((packed))
 {
    uint8_t sym_res : 1;
    uint8_t a20_out : 1;
@@ -39,7 +42,5 @@ typedef struct _psOutPort
 } PSOutPort;
 
 
-
-
-
+void set_stat(PSStatusReg *reg);
 #endif
