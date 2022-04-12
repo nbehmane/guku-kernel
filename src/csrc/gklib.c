@@ -100,3 +100,10 @@ void outb(uint16_t port, uint8_t val)
 {
    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port));
 }
+
+extern void wait()
+{
+   int i = 0;
+   int max = 9999999;
+   for (i = 0; i < max; i++);
+}

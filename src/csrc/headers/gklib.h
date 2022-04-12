@@ -9,6 +9,7 @@ extern size_t strlen(const char *s);
 extern char *strcpy(char *dest, const char *src);
 extern int strcmp(const char *s1, const char *s2);
 extern const char *strchr(const char *s, int c);
+extern void wait();
 uint8_t inb(uint16_t port);
 void outb(uint16_t port, uint8_t val);
 

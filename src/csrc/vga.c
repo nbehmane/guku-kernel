@@ -1,5 +1,4 @@
 #include "vga.h"
-#include "gklib.h"
 
 /** VGA Globals **/
 static unsigned short *vgaBuff = (unsigned short *)VGA_BASE;
@@ -8,15 +7,24 @@ static int row = 0;
 static int col = 0;
 
 /** VGA Internal Functions **/
+void VGA_scroll()
+{
+   int i = 0;
+   memset(vgaBuff, '\0', 80);
+   for (; i < 25; i++)
+      memcpy(&vgaBuff[i * WIDTH], &vgaBuff[(i + 1) * WIDTH], 80);
+}
+
 void VGA_cursor_newline()
 {
    /* This will be replaced by VGA_scroll() */
    row += 1;
    col = 0;
-   if (row == (HEIGHT + 1))
+   if (row == (HEIGHT+ 1))
    {
-      row = 0;
+      row = 25;
       col = 0;
+      VGA_scroll();
    }
    cursor = row * WIDTH + col;
 }
@@ -24,7 +32,7 @@ void VGA_cursor_newline()
 void cursor_mv()
 {
    col += 1;
-   if (col == (WIDTH + 1))
+   if (col == WIDTH)
       VGA_cursor_newline();
    else
       cursor = row * WIDTH + col;
@@ -46,8 +54,7 @@ void VGA_display_str(const char *str)
 {
    int i = 0;
    for (; *(str + i) != '\0'; i++)
-      VGA_display_char(*(str +i));
-   VGA_cursor_newline();
+      VGA_display_char(*(str + i));
 }
 /**** END VGA ****/
 
@@ -121,19 +128,59 @@ extern void print_bin(int num)
    VGA_display_str(res);
 }
 
+extern int printk(char *fmt, ...)
+{
+   char *traverse;
+   unsigned int i;
+   char *s;
+   va_list arg;
 
+   va_start(arg, fmt);
+   for (traverse = fmt; *traverse != '\0'; traverse++)
+   {
+      while (*traverse != '%') 
+      {
+         if (*traverse == '\n')
+         {
+            VGA_cursor_newline();
+            traverse++;
+            continue;
+         }
+         if (*traverse == '\0')
+            return 0;
+         VGA_display_char(*traverse);
+         traverse++;
+      }
 
+      traverse++;
+      switch (*traverse)
+      {
+         case 'd': i = va_arg(arg, int);
+            print_int(i);
+            break;
+         case 'c': i = va_arg(arg, int);
+            print_char(i);
+            break;
+         case 'u': i = va_arg(arg, int);
+            print_uchar(i);
+            break;
+         case 'x': i = va_arg(arg, long);
+            print_long_hex(i);
+            break;
+         case 'b': i = va_arg(arg, int);
+            print_bin(i);
+            break;
+         case 's': s = va_arg(arg, char *); 
+            print_str(s);
+            break;
+         case '%': print_char('%');
+            break;
+         default: print_str("printk: not valid.\n");
+            break;
+      }
+   }
+   va_end(arg);
 
-
-
-
-
-
-
-
-
-
-
-
-
+   return 0;
+}
 /**** END PRINT FUNC ****/
