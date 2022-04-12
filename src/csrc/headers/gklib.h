@@ -3,6 +3,16 @@
 #include <stddef.h>
 #include <stdint-gcc.h>
 
+/** GKLIB defines **/
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+/** GKLIB funcs **/
 extern void *memset(void *dst, int c, size_t n);
 extern void *memcpy(void *dest, const void *src, size_t n);
 extern size_t strlen(const char *s);

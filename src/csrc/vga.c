@@ -10,9 +10,9 @@ static int col = 0;
 void VGA_scroll()
 {
    int i = 0;
-   memset(vgaBuff, '\0', 80);
-   for (; i < 25; i++)
-      memcpy(&vgaBuff[i * WIDTH], &vgaBuff[(i + 1) * WIDTH], 80);
+   memset(vgaBuff, '\0', WIDTH);
+   for (; i < HEIGHT; i++)
+      memcpy(&vgaBuff[i * WIDTH], &vgaBuff[(i + 1) * WIDTH], WIDTH);
 }
 
 void VGA_cursor_newline()
@@ -20,9 +20,9 @@ void VGA_cursor_newline()
    /* This will be replaced by VGA_scroll() */
    row += 1;
    col = 0;
-   if (row == (HEIGHT+ 1))
+   if (row == (HEIGHT + 1))
    {
-      row = 25;
+      row = HEIGHT;
       col = 0;
       VGA_scroll();
    }
@@ -116,6 +116,12 @@ extern void print_long_hex(long num)
    VGA_display_str(res);
 }
 
+extern void print_long(long num)
+{
+   char *res = convert(num, 10, 0);
+   VGA_display_str(res);
+}
+
 extern void print_int(int num)
 {
    char *res = convert(num, 10, 1);
@@ -131,7 +137,7 @@ extern void print_bin(int num)
 extern int printk(char *fmt, ...)
 {
    char *traverse;
-   unsigned int i;
+   size_t i;
    char *s;
    va_list arg;
 
@@ -174,6 +180,9 @@ extern int printk(char *fmt, ...)
             print_str(s);
             break;
          case '%': print_char('%');
+            break;
+         case 'l': i = va_arg(arg, long);
+            print_long(i);
             break;
          default: print_str("printk: not valid.\n");
             break;

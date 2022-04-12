@@ -1,6 +1,8 @@
 #ifndef PS2_H
 #define PS2_H
 #include <stdint-gcc.h>
+#include "gklib.h"
+#include "vga.h"
 
 /** PS2 Macros **/
 #define PS_DPORT 0x60
@@ -47,5 +49,6 @@ typedef struct __attribute__((packed))
 /** PS2 Functions. **/
 extern uint8_t inb(uint16_t port);
 extern void outb(uint16_t port, uint8_t val);
-void set_stat(PSStatusReg *reg);
+extern void ps2_poll_stat(uint16_t port);
+extern void ps2_send_cmd(uint16_t port, uint16_t port2, uint8_t cmd);
 #endif

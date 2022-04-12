@@ -12,6 +12,8 @@ PSOutPort k_out;
 int kmain()
 {
    printk("Welcome to Guku OS!\n");
+   ps2_send_cmd(PS_WRITE, PS_DPORT, 0xAA);
+   ps2_poll_stat(PS_DPORT);
    for (;;)
       __asm__("hlt");
    return 0;
