@@ -15,41 +15,29 @@ extern void outb(uint16_t port, uint8_t val)
    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port));
 }
 
-extern void ps2_poll_stat(uint16_t port)
+extern void ps2_poll_stat(uint16_t port, uint8_t bit)
 {
    int ret = FALSE;
-
-   #if DEBUG_MSG
    int stat = 0;
-   printk("Polling status.\n");
-   #endif
 
-   while (ret == FALSE)
+   while (TRUE)
    {
       ret = inb(port);
-
-      #if DEBUG_MSG
       stat = ret;
-      #endif
-
-      ret |= 0xFE;
+      ret &= 0x01;
+      if (ret == bit)
+         break;
    }
-   #if DEBUG_MSG
-   printk("Status: %x\n", stat); 
-   #endif
+   printk("Status : Port: %x | Status: %x\n", port, stat); 
 }
 
-extern void ps2_send_cmd(uint16_t port, uint16_t port2, uint8_t cmd)
+extern void ps2_poll_data(uint16_t port)
 {
-   ps2_poll_stat(port2);
+   int ret = inb(port);
+   printk("Data   : Port: %x | Status: %x\n", port, ret); 
+}
 
-   #if DEBUG_MSG  
-   printk("Sending command...\n");
-   #endif
-
+extern void ps2_send_cmd(uint16_t port, uint8_t cmd)
+{
    outb(port, cmd);
-   
-   #if DEBUG_MSG
-   printk("%x command sent.\n", cmd);
-   #endif
 }
