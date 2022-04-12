@@ -1,10 +1,13 @@
 #ifndef PS2_H
 #define PS2_H
 #include <stdint-gcc.h>
+
+/** PS2 Macros **/
 #define PS_DPORT 0x60
 #define PS_STAT 0x64
 #define PS_WRITE 0x64
 
+/** PS2 struct defintions. **/
 typedef struct __attribute__((packed))
 {
    uint8_t p1_irpt : 1;
@@ -41,6 +44,8 @@ typedef struct __attribute__((packed))
    uint8_t p2_clk_out : 1;
 } PSOutPort;
 
-
+/** PS2 Functions. **/
+extern uint8_t inb(uint16_t port);
+extern void outb(uint16_t port, uint8_t val);
 void set_stat(PSStatusReg *reg);
 #endif
