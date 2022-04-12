@@ -19,11 +19,24 @@ void wait()
 int kmain()
 {
    uint8_t ret = 0;
-   outb(PS_WRITE, 32);
+   // Testing PS/2 Controller
+   // Disable first port
+   outb(PS_WRITE, 0xAD);
    wait();
    ret = inb(PS_DPORT);
+   print_long_hex(ret);
+
+   // Testing PS/2 Controller
+   outb(PS_WRITE, 0xAA);
    wait();
-   print_int(ret);
+   ret = inb(PS_DPORT);
+   print_long_hex(ret);
+
+   // Testing PS/2 Port
+   outb(PS_WRITE, 0xAB);
+   wait();
+   ret = inb(PS_DPORT);
+   print_long_hex(ret);
    
    for (;;)
       __asm__("hlt");

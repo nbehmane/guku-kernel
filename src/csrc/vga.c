@@ -47,6 +47,7 @@ void VGA_display_str(const char *str)
    int i = 0;
    for (; *(str + i) != '\0'; i++)
       VGA_display_char(*(str +i));
+   VGA_cursor_newline();
 }
 /**** END VGA ****/
 
