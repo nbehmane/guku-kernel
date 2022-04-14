@@ -79,8 +79,11 @@ int kmain()
 
    while (TRUE)
    {
+      // we ready for a key code?
       ps2_poll_stat(PS_STAT, 1);
+      // get that keycode bruther
       key = key_get_resp();
+      // display that keycode lmao
       key_display(key);
    }
    
