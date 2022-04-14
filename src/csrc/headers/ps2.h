@@ -56,5 +56,6 @@ extern void ps2_send_resp(uint8_t cmd);
 extern uint8_t ps2_configure(PSContConfig conf);
 extern void ps2_send_data(uint8_t cmd, uint8_t data);
 extern void key_send_cmd(uint8_t cmd);
+extern void key_get_resp();
 
 #endif

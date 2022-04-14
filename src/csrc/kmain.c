@@ -59,17 +59,28 @@ int kmain()
 
    
    printk("Verify status...\n");
-   ps2_poll_stat(PS_STAT, 0);
-   ps2_send_cmd(PS_WRITE, 0x20);
-   ps2_poll_stat(PS_STAT, 1);
-   ps2_poll_data(PS_DPORT);
+   ps2_send_resp(0x20);
    
    // Everything was successful so clear
    VGA_clear();
    printk("Welcome to Goku OS\n");
    
-   key_send_cmd(0xF0);
-   key_send_cmd(0);
+   ps2_poll_stat(PS_STAT, 0);
+   key_send_cmd(0xFF);
+
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp(); 
+   
+   key_send_cmd(0xEE);
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp();
+
+   while (TRUE)
+   {
+      ps2_poll_stat(PS_STAT, 1);
+      key_get_resp();
+   }
+   
 
    for (;;)
       __asm__("hlt");

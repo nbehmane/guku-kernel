@@ -99,13 +99,14 @@ extern uint8_t ps2_configure(PSContConfig conf)
 extern void key_send_cmd(uint8_t cmd)
 {
    int i = 0;
-   int ret = 0;
    outb(PS_DPORT, cmd);
-   for(; i < 999; i++);
-   #if DEBUG_MSG
+}
+
+extern void key_get_resp()
+{
+   int ret = 0;
    ret = inb(PS_DPORT);
    printk("Keyboard response: %x\n", ret);
-   #endif
 }
 
 
