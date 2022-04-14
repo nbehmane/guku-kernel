@@ -98,7 +98,6 @@ extern uint8_t ps2_configure(PSContConfig conf)
 
 extern void key_send_cmd(uint8_t cmd)
 {
-   int i = 0;
    outb(PS_DPORT, cmd);
 }
 

@@ -67,13 +67,14 @@ int kmain()
    
    ps2_poll_stat(PS_STAT, 0);
    key_send_cmd(0xFF);
-
+   ps2_poll_stat(PS_STAT, 1);
+   key_send_cmd(0);
    ps2_poll_stat(PS_STAT, 1);
    key_get_resp(); 
-   
    key_send_cmd(0xEE);
    ps2_poll_stat(PS_STAT, 1);
    key_get_resp();
+   VGA_clear();
 
    while (TRUE)
    {
