@@ -4,7 +4,7 @@ extern kmain
 section .text
 bits 64
 long_mode_start:
-   ; print `OKAY` to screen
+   cli
    mov ax, 0
    mov ss, ax
    mov ds, ax
