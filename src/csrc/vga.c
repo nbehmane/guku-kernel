@@ -29,7 +29,7 @@ void VGA_cursor_newline()
       cursor = row * WIDTH + col;
 }
 
-void cursor_mv()
+void VGA_cursor_mv()
 {
    col += 1;
    if (col >= WIDTH)
@@ -42,7 +42,7 @@ void cursor_mv()
 void VGA_display_char(char c)
 {
    vgaBuff[cursor] = VGA_DISP(VGA_BRIGHT(VGA_GRAY), VGA_BLACK, c);
-   cursor_mv();
+   VGA_cursor_mv();
 }
 
 void VGA_clear(void) 
@@ -191,6 +191,39 @@ extern int printk(char *fmt, ...)
             break;
          case 'l': i = va_arg(arg, long);
             print_long(i);
+            traverse++;
+            if (*traverse == 'd')
+               break;
+            else if (*traverse == 'u')
+               break;
+            else if (*traverse == 'x')
+               break;
+            else
+               traverse--;
+            break;
+         case 'q': i = va_arg(arg, long);
+            print_long(i);
+            traverse++;
+            if (*traverse == 'd')
+               break;
+            else if (*traverse == 'u')
+               break;
+            else if (*traverse == 'x')
+               break;
+            else
+               traverse--;
+            break;
+         case 'h': i = va_arg(arg, long);
+            print_long(i);
+            traverse++;
+            if (*traverse == 'd')
+               break;
+            else if (*traverse == 'u')
+               break;
+            else if (*traverse == 'x')
+               break;
+            else
+               traverse--;
             break;
          case 'p': i = (long)va_arg(arg, void*);
             print_long(i);

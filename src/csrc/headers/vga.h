@@ -28,6 +28,7 @@ void VGA_display_char(char c);
 void VGA_clear(void);
 void VGA_display_str(const char *str);
 void VGA_cursor_newline();
+void VGA_cursor_mv();
 void VGA_scroll();
 extern void print_char(char c);
 extern void print_str(const char *str);
