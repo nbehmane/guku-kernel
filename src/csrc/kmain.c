@@ -16,7 +16,8 @@ PSContConfig k_config;
 PSStatusReg k_stat;
 PSOutPort k_out;
 
-uint8_t ps2_config = 0;
+static uint8_t ps2_config = 0;
+static uint8_t key = 0;
 
 
 /**** BEGIN KMAIN ****/
@@ -79,7 +80,8 @@ int kmain()
    while (TRUE)
    {
       ps2_poll_stat(PS_STAT, 1);
-      key_get_resp();
+      key = key_get_resp();
+      key_display(key);
    }
    
 

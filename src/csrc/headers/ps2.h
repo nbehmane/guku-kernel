@@ -49,13 +49,14 @@ typedef struct __attribute__((packed))
 /** PS2 Functions. **/
 extern uint8_t inb(uint16_t port);
 extern void outb(uint16_t port, uint8_t val);
-extern void ps2_poll_data(uint16_t port);
-extern void ps2_poll_stat(uint16_t port, uint8_t bit);
+extern uint8_t ps2_poll_data(uint16_t port);
+extern uint8_t ps2_poll_stat(uint16_t port, uint8_t bit);
 extern void ps2_send_cmd(uint16_t port, uint8_t cmd);
 extern void ps2_send_resp(uint8_t cmd);
 extern uint8_t ps2_configure(PSContConfig conf);
 extern void ps2_send_data(uint8_t cmd, uint8_t data);
 extern void key_send_cmd(uint8_t cmd);
-extern void key_get_resp();
+extern uint8_t key_get_resp();
+extern void key_display(uint8_t code);
 
 #endif

@@ -1,7 +1,7 @@
 #include "ps2.h"
 
 // Set to 0 to turn off messages.
-#define DEBUG_MSG 1
+#define DEBUG_MSG 0
 
 /** Internal Functions **/
 
@@ -18,15 +18,21 @@ extern void outb(uint16_t port, uint8_t val)
    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port));
 }
 
-extern void ps2_poll_stat(uint16_t port, uint8_t bit)
+extern uint8_t ps2_poll_stat(uint16_t port, uint8_t bit)
 {
    int ret = FALSE;
+   #if DEBUG_MSG
    int stat = 0;
+   #endif
 
    while (TRUE)
    {
       ret = inb(port);
+
+      #if DEBUG_MSG
       stat = ret;
+      #endif
+
       ret &= 0x01;
       if (ret == bit)
          break;
@@ -36,9 +42,12 @@ extern void ps2_poll_stat(uint16_t port, uint8_t bit)
    printk("Polling status...\n");
    printk("Status : Port: %x | Status: %x\n", port, stat); 
    #endif
+
+   // To make the compiler happy (:
+   return ret;
 }
 
-extern void ps2_poll_data(uint16_t port)
+extern uint8_t ps2_poll_data(uint16_t port)
 {
    int ret = inb(port);
 
@@ -46,6 +55,7 @@ extern void ps2_poll_data(uint16_t port)
    printk("Polling data...\n");
    printk("Data   : Port: %x | Status: %x\n", port, ret); 
    #endif
+   return ret;
 }
 
 extern void ps2_send_cmd(uint16_t port, uint8_t cmd)
@@ -101,15 +111,24 @@ extern void key_send_cmd(uint8_t cmd)
    outb(PS_DPORT, cmd);
 }
 
-extern void key_get_resp()
+extern uint8_t key_get_resp()
 {
    int ret = 0;
    ret = inb(PS_DPORT);
+   #if DEBUG_MSG
    printk("Keyboard response: %x\n", ret);
+   #endif
+   return ret;
 }
 
-
-
-
-
-
+extern void key_display(uint8_t code)
+{
+   switch(code)
+   {
+      case 0x1E: printk("a");
+         break;
+      case 0x30: printk("b");
+         break;
+      default: break;
+   }
+}
