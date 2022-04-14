@@ -52,4 +52,9 @@ extern void outb(uint16_t port, uint8_t val);
 extern void ps2_poll_data(uint16_t port);
 extern void ps2_poll_stat(uint16_t port, uint8_t bit);
 extern void ps2_send_cmd(uint16_t port, uint8_t cmd);
+extern void ps2_send_resp(uint8_t cmd);
+extern uint8_t ps2_configure(PSContConfig conf);
+extern void ps2_send_data(uint8_t cmd, uint8_t data);
+extern void key_send_cmd(uint8_t cmd);
+
 #endif

@@ -10,29 +10,29 @@ static int col = 0;
 void VGA_scroll()
 {
    int i = 0;
-   memset(vgaBuff, '\0', WIDTH);
+   memset(&vgaBuff[0], '\0', WIDTH);
    for (; i < HEIGHT; i++)
       memcpy(&vgaBuff[i * WIDTH], &vgaBuff[(i + 1) * WIDTH], WIDTH);
+   memset(&vgaBuff[HEIGHT * WIDTH], '\0', WIDTH);
+   row = HEIGHT;
+   col = 0;
+   cursor = row * WIDTH + col;
 }
 
 void VGA_cursor_newline()
 {
-   /* This will be replaced by VGA_scroll() */
    row += 1;
    col = 0;
-   if (row == (HEIGHT + 1))
-   {
-      row = HEIGHT;
-      col = 0;
+   if (row >= (HEIGHT + 1))
       VGA_scroll();
-   }
-   cursor = row * WIDTH + col;
+   else
+      cursor = row * WIDTH + col;
 }
 
 void cursor_mv()
 {
    col += 1;
-   if (col == WIDTH)
+   if (col >= WIDTH)
       VGA_cursor_newline();
    else
       cursor = row * WIDTH + col;
@@ -47,7 +47,14 @@ void VGA_display_char(char c)
 
 void VGA_clear(void) 
 {
-   vgaBuff = memset(vgaBuff, '\0', WIDTH * HEIGHT);
+   int i = 0;
+   memset(vgaBuff, '\0', WIDTH);
+   for (; i < HEIGHT; i++)
+      memset(&vgaBuff[i * WIDTH], '\0', WIDTH);
+   memset(&vgaBuff[HEIGHT * WIDTH], '\0', WIDTH);
+   row = 0;
+   col = 0;
+   cursor = row * WIDTH + col;
 }
 
 void VGA_display_str(const char *str)
@@ -63,6 +70,7 @@ extern char *convert(long num, int base, int neg)
 {
    static char Rep[] = "0123456789ABCDEF";
    static char buffer[50];
+   memset(buffer, '\0', 50);
    char *ptr;
    int flag = 0;
    ptr = &buffer[49];

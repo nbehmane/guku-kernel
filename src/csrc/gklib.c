@@ -31,8 +31,11 @@ extern size_t strlen(const char *s)
    {
       if (*s == '\0')
          break;
-      s += 1;
-      len += 1;
+      else
+      {
+         s += 1;
+         len += 1;
+      }
    }
    return len;
 }
@@ -93,5 +96,7 @@ extern void wait()
 {
    int i = 0;
    int max = 9999999;
+   for (i = 0; i < max; i++);
+   for (i = 0; i < max; i++);
    for (i = 0; i < max; i++);
 }
