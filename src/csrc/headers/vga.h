@@ -12,7 +12,7 @@
 #define VGA_DISP(fg, bg, ch) (((FG((fg)) | BG((bg))) << 8) | (ch))
 #define VGA_BRIGHT(color) ((color) + 8)
 #define WIDTH 80
-#define HEIGHT 25
+#define HEIGHT 24
 
 /** VGA Colors **/
 #define VGA_BLACK      0
