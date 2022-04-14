@@ -184,6 +184,8 @@ extern int printk(char *fmt, ...)
          case 'l': i = va_arg(arg, long);
             print_long(i);
             break;
+         case 'p': i = (long)va_arg(arg, void*);
+            print_long(i);
          default: print_str("printk: not valid.\n");
             break;
       }
