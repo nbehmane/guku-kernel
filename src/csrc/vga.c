@@ -187,7 +187,7 @@ extern int printk(char *fmt, ...)
             print_char(i);
             break;
          case 'u': i = va_arg(arg, int);
-            print_uchar(i);
+            print_ulong(i);
             break;
          case 'x': i = va_arg(arg, long);
             print_long_hex(i);
@@ -201,7 +201,6 @@ extern int printk(char *fmt, ...)
          case '%': print_char('%');
             break;
          case 'l': i = va_arg(arg, long);
-            print_long(i);
             traverse++;
             if (*traverse == 'd')
                print_ulong(i);
@@ -224,7 +223,7 @@ extern int printk(char *fmt, ...)
             else
                traverse--;
             break;
-         case 'h': i = (short)va_arg(arg, short);
+         case 'h': i = va_arg(arg, int);
             traverse++;
             if (*traverse == 'd')
                print_int(i);
