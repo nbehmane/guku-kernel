@@ -1,22 +1,18 @@
 #include "gklib.h"
 /* TODO: strdup once malloc has been implemented. */
-
-extern void *memset(void *dst, int c, size_t n)
+void * memset (void *dst, int c, size_t n)
 {
-   int i = 0;
-   char *d = (char *)dst;
-
-   for (; i < n; i++)
-      *(d + i) = c;
-
-   return dst;
+  unsigned char *ptr = dst;
+  while (n-- > 0)
+    *ptr++ = c;
+  return dst;
 }
 
 extern void *memcpy(void *dest, const void *src, size_t n)
 {
    int i = 0;
    char *d = (char *)dest;
-   char *s = (char *)src;
+   const char *s = (char *)src;
 
    for (; i < n; i++)
       *(d + i) = *(s + i);

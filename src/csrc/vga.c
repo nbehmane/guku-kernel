@@ -9,12 +9,11 @@ static int col = 0;
 /** VGA Internal Functions **/
 void VGA_scroll()
 {
-   int i = 0;
-   memset(&vgaBuff[0], '\0', WIDTH);
-   for (; i < HEIGHT; i++)
-      memcpy(&vgaBuff[i * WIDTH], &vgaBuff[(i + 1) * WIDTH], WIDTH);
-   memset(&vgaBuff[HEIGHT * WIDTH], '\0', WIDTH);
-   row = HEIGHT;
+   memcpy(vgaBuff, &vgaBuff[WIDTH], WIDTH * HEIGHT * sizeof(short));
+
+   memset(&vgaBuff[(HEIGHT - 1) * WIDTH], '\0', WIDTH * sizeof(short));
+
+   row = HEIGHT - 1;
    col = 0;
    cursor = row * WIDTH + col;
 }
@@ -23,7 +22,7 @@ void VGA_cursor_newline()
 {
    row += 1;
    col = 0;
-   if (row >= (HEIGHT + 1))
+   if (row >= HEIGHT)
       VGA_scroll();
    else
       cursor = row * WIDTH + col;
@@ -66,7 +65,7 @@ void VGA_display_str(const char *str)
 /**** END VGA ****/
 
 /**** BEGIN PRINT FUNC ****/
-extern char *convert(long num, int base, int neg)
+extern char *convert(size_t num, int base, int neg)
 {
    static char Rep[] = "0123456789ABCDEF";
    static char buffer[50];
@@ -136,6 +135,18 @@ extern void print_int(int num)
    VGA_display_str(res);
 }
 
+extern void print_unsigned(unsigned int num)
+{
+   char *res = convert(num, 10, 0);
+   VGA_display_str(res);
+}
+
+extern void print_ulong(unsigned long num)
+{
+   char *res = convert(num, 10, 0);
+   VGA_display_str(res);
+}
+
 extern void print_bin(int num)
 {
    char *res = convert(num, 2, 0);
@@ -193,11 +204,11 @@ extern int printk(char *fmt, ...)
             print_long(i);
             traverse++;
             if (*traverse == 'd')
-               break;
+               print_ulong(i);
             else if (*traverse == 'u')
-               break;
+               print_unsigned(i);
             else if (*traverse == 'x')
-               break;
+               print_long_hex(i);
             else
                traverse--;
             break;
@@ -205,23 +216,22 @@ extern int printk(char *fmt, ...)
             print_long(i);
             traverse++;
             if (*traverse == 'd')
-               break;
+               print_int(i);
             else if (*traverse == 'u')
-               break;
+               print_unsigned(i);
             else if (*traverse == 'x')
-               break;
+               print_long_hex(i);
             else
                traverse--;
             break;
-         case 'h': i = va_arg(arg, long);
-            print_long(i);
+         case 'h': i = (short)va_arg(arg, short);
             traverse++;
             if (*traverse == 'd')
-               break;
+               print_int(i);
             else if (*traverse == 'u')
-               break;
+               print_unsigned(i);
             else if (*traverse == 'x')
-               break;
+               print_long_hex(i);
             else
                traverse--;
             break;
