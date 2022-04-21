@@ -1,6 +1,8 @@
 #include "vga.h"
 #include "gklib.h"
 #include "ps2.h"
+#include "pic.h"
+#include "irq.h"
 
 /** Helpful Macros **/
 #ifndef TRUE
@@ -109,7 +111,11 @@ int kmain()
    VGA_clear();
    printk("Testing printk\n");
    
-
+   // PIC 
+   PIC_init(0x20, 0x2F);
+   //idt_init();
+   
+   //__asm__("int $0x0A");
 
    while (TRUE)
    {

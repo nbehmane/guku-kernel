@@ -17,7 +17,7 @@ clean:
 	@rm -r build
 
 run: $(img)
-	@qemu-system-x86_64 -drive format=raw,file=$(img)
+	@qemu-system-x86_64  -drive format=raw,file=$(img)
 
 img: $(img)
 
@@ -41,16 +41,19 @@ $(img): $(kernel) $(grub_cfg)
 
 $(kernel): $(assembly_object_files) $(linker_script)
 	@../cross/bin/x86_64-elf-ld -n -T $(linker_script) $(assembly_object_files) \
-	build/arch/$(arch)/kmain.o build/arch/$(arch)/vga.o build/arch/$(arch)/gklib.o \
-	build/arch/$(arch)/ps2.o -o $(kernel) 
+	build/arch/$(arch)/kmain.o \
+	build/arch/$(arch)/vga.o \
+	build/arch/$(arch)/gklib.o \
+	build/arch/$(arch)/ps2.o \
+	build/arch/$(arch)/pic.o \
+	build/arch/$(arch)/irq.o -o $(kernel) 
 
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@mkdir -p $(shell dirname $@)
-	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/kmain.c -o build/arch/$(arch)/kmain.o
-	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/vga.c -o build/arch/$(arch)/vga.o
-	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/gklib.c -o build/arch/$(arch)/gklib.o
-	@../cross/bin/x86_64-elf-gcc -Wall -g -c -Isrc/csrc/headers src/csrc/ps2.c -o build/arch/$(arch)/ps2.o
+	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/kmain.c -o build/arch/$(arch)/kmain.o
+	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/vga.c -o build/arch/$(arch)/vga.o
+	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/gklib.c -o build/arch/$(arch)/gklib.o
+	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/ps2.c -o build/arch/$(arch)/ps2.o
+	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/pic.c -o build/arch/$(arch)/pic.o
+	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/irq.c -o build/arch/$(arch)/irq.o
 	@nasm -felf64 $< -o $@
-
-
-
