@@ -304,7 +304,7 @@ isr_no_err_stub 255
 global isr_stub_table
 isr_stub_table:
 %assign i 0 
-%rep    32 
+%rep    256 
     dq isr_stub_%+i ; use DQ instead if targeting 64-bit
 %assign i i+1 
 %endrep

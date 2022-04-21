@@ -113,9 +113,9 @@ int kmain()
    
    // PIC 
    PIC_init(0x20, 0x2F);
-   //idt_init();
+   idt_init();
    
-   //__asm__("int $0x0A");
+   __asm__("int $0x0A");
 
    while (TRUE)
    {
