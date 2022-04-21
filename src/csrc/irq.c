@@ -1,5 +1,6 @@
 #include "irq.h"
 #include "vga.h"
+#include "pic.h"
 
 __attribute__((aligned(0x10))) static idt_entry_t idt[256];
 static idtr_t idtr;
@@ -7,7 +8,8 @@ extern void* isr_stub_table[];
 
 void exception_handler(uint8_t intrpt) 
 {
-    printk("Yo, whattup dawg! \n");
+   printk("Yo, whattup dawg! %d\n", intrpt);
+   PIC_sendEOI(intrpt - 0x20);
 //    __asm__ volatile ("cli; hlt");
 }
 
@@ -34,5 +36,5 @@ void idt_init(void) {
     }
  
     __asm__ volatile ("lidt %0" : : "m"(idtr)); // load the new IDT
-    //__asm__ volatile ("sti"); // set the interrupt flag
+    __asm__ volatile ("sti"); // set the interrupt flag
 }
