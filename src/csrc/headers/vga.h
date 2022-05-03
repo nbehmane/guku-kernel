@@ -30,13 +30,13 @@ void VGA_display_str(const char *str);
 void VGA_cursor_newline();
 void VGA_cursor_mv();
 void VGA_scroll();
-extern void print_char(char c);
-extern void print_str(const char *str);
-extern void print_uchar(unsigned char c);
-extern void print_short(short shrt);
-extern void print_long_hex(long num);
-extern void print_int(int num);
-extern void print_bin(int num);
-extern int printk(char *fmt, ...);
+void print_char(char c);
+void print_str(const char *str);
+void print_uchar(unsigned char c);
+void print_short(short shrt);
+void print_long_hex(long num);
+void print_int(int num);
+void print_bin(int num);
+int printk(char *fmt, ...);
 
 #endif // VGA_H

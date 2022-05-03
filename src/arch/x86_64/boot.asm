@@ -1,6 +1,7 @@
 ; Makes a label publc.
 ; start is the entry point to the kernel
 global start
+global gdt64
 extern long_mode_start
 
 ; default section (.text) for executable code.

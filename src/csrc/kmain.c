@@ -3,6 +3,8 @@
 #include "ps2.h"
 #include "pic.h"
 #include "irq.h"
+#include "tss.h"
+#include "gdt.h"
 
 /** Helpful Macros **/
 #ifndef TRUE
@@ -20,7 +22,7 @@ PSOutPort k_out;
 
 static uint8_t ps2_config = 0;
 static uint8_t key = 0;
-
+extern uint64_t gdt64;
 
 /**** BEGIN KMAIN ****/
 int kmain()
@@ -111,23 +113,19 @@ int kmain()
 
 /** END TODO **/
    
-   VGA_clear();
-   printk("Testing printk\n");
+   
+
+   gdt_init();
+   printk("GDT Installed.\n");
    
    // PIC 
    PIC_init(0x20, 0x2F);
    idt_init();
    IRQ_clear_mask(1);
-   //__asm__ volatile ("int $0x01");
 
    while (TRUE)
    {
-      // we ready for a key code?
-  //    ps2_poll_stat(PS_STAT, 1);
-      // get that keycode bruther
       key = key_get_resp();
-      // display that keycode lmao
-   //   key_display(key);
    }
    
 

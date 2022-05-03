@@ -65,7 +65,7 @@ void VGA_display_str(const char *str)
 /**** END VGA ****/
 
 /**** BEGIN PRINT FUNC ****/
-extern char *convert(size_t num, int base, int neg)
+char *convert(size_t num, int base, int neg)
 {
    static char Rep[] = "0123456789ABCDEF";
    static char buffer[50];
@@ -93,67 +93,67 @@ extern char *convert(size_t num, int base, int neg)
    return (ptr);
 }
 
-extern void print_char(char c)
+void print_char(char c)
 {
    VGA_display_char(c);
 }
 
-extern void print_str(const char *str)
+void print_str(const char *str)
 {
    VGA_display_str(str);
 }
 
-extern void print_uchar(unsigned char c)
+void print_uchar(unsigned char c)
 {
    unsigned char uc = c;
    char *res = convert(uc, 10, 0);
    VGA_display_str(res);
 }
 
-extern void print_short(short shrt)
+void print_short(short shrt)
 {
    short s = shrt;
    char *res = convert(s, 10, 0);
    VGA_display_str(res);
 }
 
-extern void print_long_hex(long num)
+void print_long_hex(long num)
 {
    char *res = convert(num, 16, 0);
    VGA_display_str(res);
 }
 
-extern void print_long(long num)
+void print_long(long num)
 {
    char *res = convert(num, 10, 0);
    VGA_display_str(res);
 }
 
-extern void print_int(int num)
+void print_int(int num)
 {
    char *res = convert(num, 10, 1);
    VGA_display_str(res);
 }
 
-extern void print_unsigned(unsigned int num)
+void print_unsigned(unsigned int num)
 {
    char *res = convert(num, 10, 0);
    VGA_display_str(res);
 }
 
-extern void print_ulong(unsigned long num)
+void print_ulong(unsigned long num)
 {
    char *res = convert(num, 10, 0);
    VGA_display_str(res);
 }
 
-extern void print_bin(int num)
+void print_bin(int num)
 {
    char *res = convert(num, 2, 0);
    VGA_display_str(res);
 }
 
-extern int printk(char *fmt, ...)
+int printk(char *fmt, ...)
 {
    char *traverse;
    size_t i;
