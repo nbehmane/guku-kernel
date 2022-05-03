@@ -240,3 +240,91 @@ extern void key_display(uint8_t code)
       default: break;
    }
 }
+
+void keyboard_init()
+{
+   PSContConfig k_config;
+   //PSStatusReg k_stat;
+   //PSOutPort k_out;
+   uint8_t ps2_config = 0;
+
+   /** TODO: KEBOARD SETUP FUNC **/
+   // Disabling 1st port.
+   ps2_poll_stat(PS_STAT, 0);
+   ps2_send_cmd(PS_WRITE, 0xA7);
+
+   // Disabling 2nd port.   
+   ps2_poll_stat(PS_STAT, 0);
+   ps2_send_cmd(PS_WRITE, 0xAD);
+
+   // Getting config bits.
+   ps2_send_resp(0x20);
+   
+   // Do a self check.
+   ps2_send_resp(0xAA);
+
+   
+   /** CHECK THE USEFULLNESS OF DOING IT THIS WAY!!! **/
+   // Set the configure bits for the controller.
+   k_config.p1_irpt = 1;
+   k_config.p2_irpt = 0;
+   k_config.sf      = 1;
+   k_config.zero    = 0;
+   k_config.p1_clk  = 0;
+   k_config.p2_clk  = 0;
+   k_config.p1      = 0; 
+   k_config.zero2   = 0;
+   
+   // Collect the bits. 
+   ps2_config = ps2_configure(k_config);
+   // printk("PS/2 Config: %b\n", ps2_config);
+   /** END NOTE **/
+   
+   ps2_send_data(0x60, ps2_config);
+
+   //rintk("Verify status...\n");
+   ps2_send_resp(0x20);
+   
+   /** Reset... **/
+   ps2_poll_stat(PS_STAT, 0);
+   key_send_cmd(0xFF);
+   ps2_poll_stat(PS_STAT, 1);
+   key_send_cmd(0);
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp(); 
+
+   key_send_cmd(0xEE);
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp();
+
+   /** Check the scan code.**/
+   ps2_poll_stat(PS_STAT, 0);
+   key_send_cmd(0xF0);
+   ps2_poll_stat(PS_STAT, 1);
+   key_send_cmd(0);
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp(); 
+
+   /** Set the scan code to 1 **/
+   //printk("Verify\n");
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp();
+   
+   /** Set the scan code to 1**/
+   ps2_poll_stat(PS_STAT, 0);
+   key_send_cmd(0xF0);
+   ps2_poll_stat(PS_STAT, 1);
+   key_send_cmd(1);
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp(); 
+
+   /** Verify that it's keycode 1 **/
+   ps2_poll_stat(PS_STAT, 0);
+   key_send_cmd(0xF0);
+   ps2_poll_stat(PS_STAT, 1);
+   key_send_cmd(0);
+   ps2_poll_stat(PS_STAT, 1);
+   key_get_resp(); 
+
+/** END TODO **/
+}

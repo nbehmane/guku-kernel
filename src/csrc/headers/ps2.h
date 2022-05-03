@@ -58,5 +58,6 @@ extern void ps2_send_data(uint8_t cmd, uint8_t data);
 extern void key_send_cmd(uint8_t cmd);
 extern uint8_t key_get_resp();
 extern void key_display(uint8_t code);
+void keyboard_init();
 
 #endif
