@@ -46,7 +46,6 @@ $(kernel): $(assembly_object_files) $(linker_script)
 	build/arch/$(arch)/gklib.o \
 	build/arch/$(arch)/ps2.o \
 	build/arch/$(arch)/pic.o \
-	build/arch/$(arch)/tss.o \
 	build/arch/$(arch)/gdt.o \
 	build/arch/$(arch)/irq.o -o $(kernel) 
 
@@ -58,6 +57,5 @@ build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/ps2.c -o build/arch/$(arch)/ps2.o
 	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/pic.c -o build/arch/$(arch)/pic.o
 	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/irq.c -o build/arch/$(arch)/irq.o
-	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/tss.c -o build/arch/$(arch)/tss.o
 	@../cross/bin/x86_64-elf-gcc -ffreestanding -Wall -g -c -Isrc/csrc/headers src/csrc/gdt.c -o build/arch/$(arch)/gdt.o
 	@nasm -felf64 $< -o $@

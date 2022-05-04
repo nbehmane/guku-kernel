@@ -8,6 +8,8 @@ extern void* isr_stub_table[];
 
 void exception_handler(uint8_t intrpt) 
 {
+   register void *sp asm ("sp");
+   printk("sp %p\n", sp);
    printk("Interrupt %d called.\n", intrpt);
    PIC_sendEOI(intrpt - 0x20);
 //    __asm__ volatile ("cli; hlt");

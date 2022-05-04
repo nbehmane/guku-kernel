@@ -3,7 +3,6 @@
 #include "ps2.h"
 #include "pic.h"
 #include "irq.h"
-#include "tss.h"
 #include "gdt.h"
 
 /** Helpful Macros **/
@@ -43,6 +42,12 @@ int kmain()
    printk("Clearing interrupt mask: 1 ...");
    IRQ_clear_mask(1);
    printk("ok.\n");
+   asm ("int $0x0e");
+   asm ("int $0x0e");
+   asm ("int $0x0e");
+   asm ("int $0x01");
+   asm ("int $0x02");
+   asm ("int $0x0e");
 
    while (TRUE)
    {

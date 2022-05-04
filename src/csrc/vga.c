@@ -236,6 +236,7 @@ int printk(char *fmt, ...)
             break;
          case 'p': i = (long)va_arg(arg, void*);
             print_long(i);
+            break;
          default: print_str("printk: not valid.\n");
             break;
       }

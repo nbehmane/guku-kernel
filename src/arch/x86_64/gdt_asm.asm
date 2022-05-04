@@ -11,6 +11,8 @@ LoadGDT:
    mov rax, 0x08
    push rax
    push rdi
+   mov ax, 0x30
+   ltr ax
    retfq
 
 global LoadGDT
