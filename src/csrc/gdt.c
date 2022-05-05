@@ -39,7 +39,7 @@ void gdt_init()
    tss.ist[6] = (uint64_t)(&stack7[STACK_SIZE - 1]);
 
    for (int i = 0; i < 7; i++)
-      printk("SP %d: %p\n", i, tss.ist[i]);
+      printk("IST SP %d: %p\n", i, tss.ist[i]);
 
    gdtDescriptor.Size = sizeof(GDT) - 1;
    gdtDescriptor.Offset = (uint64_t)&DefaultGDT;

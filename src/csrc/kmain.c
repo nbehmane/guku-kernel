@@ -16,7 +16,6 @@
 
 /** Globals **/
 static uint8_t key = 0;
-extern uint64_t gdt64;
 
 /**** BEGIN KMAIN ****/
 int kmain()

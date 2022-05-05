@@ -8,11 +8,12 @@ extern void* isr_stub_table[];
 
 void exception_handler(uint8_t intrpt) 
 {
+   register void *sp asm ("sp");
    int i = 0;
-   //register void *sp asm ("sp");
    printk("-------------------\n");
+   printk("Current SP     : %p\n", sp);
    printk("Interrupt      : %d\n", intrpt);
-   //printk("Current SP     : %p\n", sp);
+   printk("Interrupt Addr : %d\n", &intrpt);
    printk("Local Var Addr : %p\n", &i);
    printk("-------------------\n");
    PIC_sendEOI(intrpt - 0x20);
@@ -39,7 +40,7 @@ void idt_init(void) {
         idt_set_descriptor(vector, isr_stub_table[vector], 0x8E, 0);
         // vectors[vector] = true;
     }
-    idt_set_descriptor(14, isr_stub_table[14], 0x8E, 1);
+    idt_set_descriptor(14, isr_stub_table[14], 0x8F, 2); // Not sure if this should be an exception (0x8F)
     __asm__ volatile ("lidt %0" : : "m"(idtr)); // load the new IDT
     __asm__ volatile ("sti"); // set the interrupt flag
 }
