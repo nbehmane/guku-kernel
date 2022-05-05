@@ -1,6 +1,12 @@
 #include "gdt.h"
 
-static uint64_t stack[STACK_SIZE];
+uint64_t stack1[STACK_SIZE];
+uint64_t stack2[STACK_SIZE];
+uint64_t stack3[STACK_SIZE];
+uint64_t stack4[STACK_SIZE];
+uint64_t stack5[STACK_SIZE];
+uint64_t stack6[STACK_SIZE];
+uint64_t stack7[STACK_SIZE];
 
 __attribute__((aligned(0x1000)))
 GDT DefaultGDT = {
@@ -24,8 +30,16 @@ void gdt_init()
    DefaultGDT.TSS.base2 = (((uint64_t)&tss >> 24) & 0xFF);
    DefaultGDT.TSS.base3 = (((uint64_t)&tss >> 32) & 0xFFFFFFFF);
 
-   tss.rsp[0] = (uint64_t)(stack + (STACK_SIZE - 1));
-   printk("STACK ADDR: %p\n", stack + (STACK_SIZE - 1));
+   tss.ist[0] = (uint64_t)(&stack1[STACK_SIZE - 1]);
+   tss.ist[1] = (uint64_t)(&stack2[STACK_SIZE - 1]);
+   tss.ist[2] = (uint64_t)(&stack3[STACK_SIZE - 1]);
+   tss.ist[3] = (uint64_t)(&stack4[STACK_SIZE - 1]);
+   tss.ist[4] = (uint64_t)(&stack5[STACK_SIZE - 1]);
+   tss.ist[5] = (uint64_t)(&stack6[STACK_SIZE - 1]);
+   tss.ist[6] = (uint64_t)(&stack7[STACK_SIZE - 1]);
+
+   for (int i = 0; i < 7; i++)
+      printk("SP %d: %p\n", i, tss.ist[i]);
 
    gdtDescriptor.Size = sizeof(GDT) - 1;
    gdtDescriptor.Offset = (uint64_t)&DefaultGDT;

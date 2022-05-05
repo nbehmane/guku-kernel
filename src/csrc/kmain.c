@@ -23,7 +23,7 @@ int kmain()
 {
    printk("Welcome to Guku OS!\n");
 
-   printk("GDT initialization...");
+   printk("GDT initialization...\n");
    gdt_init();
    printk("ok.\n");
 
@@ -42,11 +42,11 @@ int kmain()
    printk("Clearing interrupt mask: 1 ...");
    IRQ_clear_mask(1);
    printk("ok.\n");
-   asm ("int $0x0e");
-   asm ("int $0x0e");
-   asm ("int $0x0e");
-   asm ("int $0x01");
-   asm ("int $0x02");
+
+   register void *sp asm ("sp");
+   printk("KMAIN SP %p\n", sp);
+   printk("------------------\n");
+
    asm ("int $0x0e");
 
    while (TRUE)

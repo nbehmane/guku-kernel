@@ -23,6 +23,6 @@ typedef struct {
 
 void idt_init(void);
 void exception_handler(uint8_t intrpt);
-void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags);
+void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags, int ist);
 
 #endif // IRQ_H
